@@ -1,0 +1,30 @@
+---
+version: "2"
+services:
+  webgrabplus:
+    build:
+      context: ./webgrab/
+    image: psibo/webgrabplus
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - ${PWD}/webgrab/config:/config
+      - ${PWD}/output:/data
+    restart: unless-stopped
+
+  web:
+    image: nginx:latest
+    volumes:
+      - ${PWD}/php/code:/code
+      - ${PWD}/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    restart: unless-stopped
+    
+  php:
+    build:
+      context: ./php/
+    image: psibo/php:7-fpm
+    volumes:
+      - ${PWD}/php/code:/code
+    restart: unless-stopped
