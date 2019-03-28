@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+    set -- php "$@"
+fi
+
+cp -R /code/* /var/www/html/
+chown -R www-data:www-data /var/www/html
+
+exec "$@"
