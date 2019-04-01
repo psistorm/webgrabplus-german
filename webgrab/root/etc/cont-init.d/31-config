@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+
+# copy config
+[[ ! -e /config/update.properties ]] && \
+    cp /defaults/update.properties /config/
+
+# permissions
+chown -R abc:abc \
+    /config \
+    /data
