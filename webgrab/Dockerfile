@@ -2,10 +2,15 @@ FROM linuxserver/webgrabplus as base
 
 RUN \
     echo "**** Install necessary packages ****" && \
-    apt update && \
-    apt install -y php php-curl \
-                   build-essential libexpat1-dev && \
-    cpan install XML::DOM && \
+    apt-get update && \
+    apt-get install -y perl php php-curl build-essential libexpat1 libexpat1-dev
+
+RUN \
+    echo "**** Install perl packages ****" && \
+    curl -L https://cpanmin.us | perl - App::cpanminus && \
+    cpanm HTTP::Daemon@6.01 XML::DOM
+
+RUN \
     echo "**** cleanup ****" && \
     rm -rf \
         /tmp/* \
